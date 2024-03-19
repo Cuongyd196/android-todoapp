@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    >
+
+    <item
+        android:id="@+id/createTodo"
+        android:title="Thêm mới"
+        android:icon="@drawable/ic_add_todo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/searchTodo"
+        android:title="Tìm kiếm"
+        android:icon="@drawable/ic_search_todo"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/aboutApp"
+        android:title="Thông tin"
+        app:showAsAction="never|withText" />
+    <item
+        android:id="@+id/exitApp"
+        android:title="Thoát"
+        app:showAsAction="never" />
+</menu>

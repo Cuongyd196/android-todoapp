@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    tools:context=".AddTodoActivity">
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiêu đề"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <!-- Ô nhập tiêu đề -->
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập tiêu đề"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Danh mục -->
+    <TextView
+        android:id="@+id/textViewCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Danh mục"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Ô nhập danh mục -->
+    <EditText
+        android:id="@+id/editTextCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập danh mục"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Thời gian -->
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thời gian"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Ô nhập thời gian -->
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
+        android:hint="Chọn thời gian"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Checkbox hoàn thành -->
+    <CheckBox
+        android:id="@+id/checkBoxCompleted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hoàn thành"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+
+    <!-- Button Lưu -->
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lưu"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Button Quay lại -->
+    <Button
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quay lại"
+        android:layout_marginTop="8dp"/>
+    </LinearLayout>
+</LinearLayout>
