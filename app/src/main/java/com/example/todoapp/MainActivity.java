@@ -27,19 +27,19 @@ public class MainActivity extends AppCompatActivity {
         ListView listviewTodo = findViewById(R.id.listviewTodo);
         db = new DBHelper(this, "todo.sqlite", null, 1);
         listTodo = db.getAllToDos();
+        if (listTodo.isEmpty()) {
+            Toast.makeText(this, "Danh sách rỗng", Toast.LENGTH_SHORT).show();
+        }
         adapter = new TodoListViewAdapter(this, R.layout.todo_item, listTodo);
         listviewTodo.setAdapter(adapter);
-        DanhsachCV();
+        loadTodo();
     }
 
-
-
-    public void DanhsachCV(){
+    public void loadTodo(){
         listTodo.clear();
         listTodo.addAll(db.getAllToDos());
         this.adapter.notifyDataSetChanged();
     }
-
     public void editTodo(int idTodo){
         Intent intent = new Intent(MainActivity.this, AddTodoActivity.class);
         intent.putExtra("idTodo", idTodo); // Đặt dữ liệu vào Intent với key-value pair
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 db.DeleteByID(idTodo);
                 Toast.makeText(MainActivity.this,"Đã xóa công việc: " +tencv,Toast.LENGTH_LONG).show();
-                DanhsachCV();
+                loadTodo();
             }
         });
         dialog.setNegativeButton("không", new DialogInterface.OnClickListener() {

@@ -89,6 +89,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lưu"
+        android:background="@color/primary"
+        android:textColor="@color/white"
+        android:layout_marginRight="5dp"
         android:layout_marginTop="8dp"/>
 
     <!-- Button Quay lại -->
@@ -96,6 +99,8 @@
         android:id="@+id/buttonBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#FF5722"
+        android:textColor="@color/white"
         android:text="Quay lại"
         android:layout_marginTop="8dp"/>
     </LinearLayout>

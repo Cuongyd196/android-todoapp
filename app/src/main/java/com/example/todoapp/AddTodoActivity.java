@@ -26,7 +26,8 @@ public class AddTodoActivity extends AppCompatActivity {
     CheckBox checkBoxCompleted;
     Calendar calendar;
     DBHelper db;
-
+    Button buttonSave;
+    Button buttonBack;
     int idTodo = -1;
 
     @Override
@@ -46,7 +47,8 @@ public class AddTodoActivity extends AppCompatActivity {
         checkBoxCompleted = findViewById(R.id.checkBoxCompleted);
         editTextTime.setOnClickListener(view -> showDateTimePickerDialog());
         calendar = Calendar.getInstance();
-        Button buttonSave = findViewById(R.id.buttonSave);
+        buttonSave = findViewById(R.id.buttonSave);
+        buttonBack = findViewById(R.id.buttonBack);
 
         Intent intent = getIntent();
 
@@ -85,6 +87,13 @@ public class AddTodoActivity extends AppCompatActivity {
                  db.UpdateByID(todoItem);
                  Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
             }
+            // Tạo Intent để quay lại MainActivity
+            Intent intentReturn = new Intent(AddTodoActivity.this, MainActivity.class);
+            startActivity(intentReturn);
+            finish();
+        });
+
+        buttonBack.setOnClickListener(view -> {
             // Tạo Intent để quay lại MainActivity
             Intent intentReturn = new Intent(AddTodoActivity.this, MainActivity.class);
             startActivity(intentReturn);
