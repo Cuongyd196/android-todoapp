@@ -15,6 +15,8 @@ import android.app.DatePickerDialog;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -23,6 +25,9 @@ public class AddTodoActivity extends AppCompatActivity {
     EditText editTextTime, editTextTitle, editTextCategory;
     CheckBox checkBoxCompleted;
     Calendar calendar;
+    DBHelper db;
+
+    int idTodo = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,36 +39,57 @@ public class AddTodoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        db = new DBHelper(this, "todo.sqlite", null, 1);
         editTextTime = findViewById(R.id.editTextTime);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextCategory = findViewById(R.id.editTextCategory);
-
+        checkBoxCompleted = findViewById(R.id.checkBoxCompleted);
         editTextTime.setOnClickListener(view -> showDateTimePickerDialog());
         calendar = Calendar.getInstance();
-
         Button buttonSave = findViewById(R.id.buttonSave);
-        buttonSave.setOnClickListener(view -> {
-            // Tạo một đối tượng TodoItem từ dữ liệu nhập vào
-            MyTodo todoItem = new MyTodo(
-                    1,
-                    editTextTitle.getText().toString(),
-                    editTextCategory.getText().toString(),
-                    editTextTime.getText().toString(),
-                    checkBoxCompleted.isChecked()
-            );
-            // Tạo Intent để quay lại MainActivity
-            Intent intent = new Intent(AddTodoActivity.this, MainActivity.class);
-            // Tạo một Bundle và đặt đối tượng todoItem vào Bundle với key là "todo"
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("todo", (Serializable) todoItem);
 
-            // Đưa Bundle vào Intent
-            intent.putExtras(bundle);
-            startActivity(intent);
-            // Kết thúc AddTodoActivity
+        Intent intent = getIntent();
+
+        if (intent.hasExtra("idTodo")) {
+            idTodo = intent.getIntExtra("idTodo", -1);
+        }
+
+        if (idTodo != -1) {
+            buttonSave.setText("Sửa");
+            MyTodo myTodo = db.FindByID(idTodo);
+            if (myTodo != null) {
+                editTextTime.setText(myTodo.getThoiGian());
+                editTextTitle.setText(myTodo.getTenCV());
+                editTextCategory.setText(myTodo.getDanhMuc());
+                checkBoxCompleted.setChecked(myTodo.isHoanThanh());
+            }
+        }
+
+        buttonSave.setOnClickListener(view -> {
+
+            if ( idTodo == -1){
+                // Tạo một đối tượng TodoItem từ dữ liệu nhập vào
+                MyTodo todoItem = new MyTodo();
+                todoItem.TenCV = editTextTitle.getText().toString();
+                todoItem.DanhMuc = editTextCategory.getText().toString();
+                todoItem.ThoiGian = editTextTime.getText().toString();
+                todoItem.HoanThanh =  checkBoxCompleted.isChecked();
+                db.addToDo(todoItem);
+                Toast.makeText(this, "Thêm thành công!", Toast.LENGTH_SHORT).show();
+            }else {
+                 MyTodo todoItem = db.FindByID(idTodo);
+                 todoItem.setTenCV(editTextTitle.getText().toString());
+                 todoItem.setDanhMuc(editTextCategory.getText().toString());
+                 todoItem.setThoiGian(editTextTime.getText().toString());
+                 todoItem.setHoanThanh(checkBoxCompleted.isChecked());
+                 db.UpdateByID(todoItem);
+                 Toast.makeText(this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+            }
+            // Tạo Intent để quay lại MainActivity
+            Intent intentReturn = new Intent(AddTodoActivity.this, MainActivity.class);
+            startActivity(intentReturn);
             finish();
         });
-
     }
     private void showDateTimePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,

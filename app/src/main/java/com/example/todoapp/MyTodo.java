@@ -13,6 +13,11 @@ public class MyTodo {
         this.ThoiGian = thoiGian;
         this.HoanThanh= hoanThanh;
     }
+
+    public MyTodo() {
+
+    }
+
     public int getID() {
         return ID;
     }

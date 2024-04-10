@@ -1,6 +1,8 @@
 package com.example.todoapp;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,35 +18,51 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     ArrayList<MyTodo> listTodo; //Mảng dữ liệu
     TodoListViewAdapter adapter;
+
+    DBHelper db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listTodo = new ArrayList<>();
         ListView listviewTodo = findViewById(R.id.listviewTodo);
-
-        listTodo.add(new MyTodo(1,"t", "e", "f", false));
+        db = new DBHelper(this, "todo.sqlite", null, 1);
+        listTodo = db.getAllToDos();
         adapter = new TodoListViewAdapter(this, R.layout.todo_item, listTodo);
         listviewTodo.setAdapter(adapter);
+        DanhsachCV();
+    }
 
-        // Nhận dữ liệu từ Intent
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("todo")) {
-            Bundle bundle = intent.getExtras();
-            if (bundle != null) {
-                // Lấy đối tượng todo từ Bundle
-                MyTodo todoItem = (MyTodo) bundle.getSerializable("todo");
-                if (todoItem != null) {
-                    listTodo.add(todoItem);
-                    if (adapter == null) {
-                        adapter = new TodoListViewAdapter(this, R.layout.todo_item, listTodo);
-                        listviewTodo.setAdapter(adapter);
-                    } else {
-                        adapter.notifyDataSetChanged();
-                    }
-                }
+
+
+    public void DanhsachCV(){
+        listTodo.clear();
+        listTodo.addAll(db.getAllToDos());
+        this.adapter.notifyDataSetChanged();
+    }
+
+    public void editTodo(int idTodo){
+        Intent intent = new Intent(MainActivity.this, AddTodoActivity.class);
+        intent.putExtra("idTodo", idTodo); // Đặt dữ liệu vào Intent với key-value pair
+        startActivity(intent);
+    }
+
+    public void deleteTodo(int idTodo, String tencv){
+        AlertDialog.Builder dialog= new AlertDialog.Builder(this);
+        dialog.setMessage("Bạn có muốn xóa công việc "+ tencv +" này không?");
+        dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.DeleteByID(idTodo);
+                Toast.makeText(MainActivity.this,"Đã xóa công việc: " +tencv,Toast.LENGTH_LONG).show();
+                DanhsachCV();
             }
-        }
+        });
+        dialog.setNegativeButton("không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.show();
     }
 
     @Override
@@ -79,11 +97,11 @@ public class MainActivity extends AppCompatActivity {
     public void createTodo(){
         // Tạo Intent để chuyển đến Activity mới
         Intent intent = new Intent(MainActivity.this, AddTodoActivity.class);
+        intent.putExtra("idTodo", -1); // Đặt dữ liệu vào Intent với key-value pair
         startActivity(intent);
-        Toast.makeText(this, "Menu Item is createTodo", Toast.LENGTH_SHORT).show();
     }
     public void searchTodo(){
-        Toast.makeText(this, "Menu Item is searchTodo", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Menu Item is searchTodo", Toast.LENGTH_SHORT).show();
     }
 
 

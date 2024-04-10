@@ -1,8 +1,10 @@
 package com.example.todoapp;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import java.util.List;
 
@@ -45,8 +47,31 @@ public class TodoListViewAdapter extends BaseAdapter {
         MyTodo todo = myTodo.get(position);
         TextView txtTenCV = viewTodo.findViewById(R.id.txtTenCV);
         TextView txtThoiGian = viewTodo.findViewById(R.id.txtThoigian);
+        CheckBox cbHoanThanh = viewTodo.findViewById(R.id.cbHoanThanh);
+        cbHoanThanh.setEnabled(false); // Vô hiệu hóa checkbox
         txtTenCV.setText(String.format("%s", todo.getTenCV()));
-//        txtThoiGian.setText(String.format("%s", todo.getThoiGian()));
+        txtThoiGian.setText(String.format("%s", todo.getThoiGian()));
+
+        if (todo.HoanThanh){
+            cbHoanThanh.setChecked(true);
+            txtTenCV.setPaintFlags(txtTenCV.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
+        // Thiết lập sự kiện nhấn cho mỗi item
+        viewTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.editTodo(todo.getID());
+            }
+        });
+
+        viewTodo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                context.deleteTodo(todo.getID(), todo.getTenCV());
+                return false;
+            }
+        });
 
         return viewTodo;
     }
